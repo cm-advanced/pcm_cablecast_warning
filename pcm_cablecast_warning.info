@@ -1,0 +1,11 @@
+name = Open Signal PCM Cablecast Warning
+description = Shows an alert on every page if Cablecast a dev instance is using the production Cablecast server
+
+core = 7.x
+package = Open Signal PCM Community Media Advanced
+version = 7.x-1.0
+project = "pcm_cablecast_warning"
+project_status_url = https://github.com/cm-advanced/pcm_cablecast_warning
+
+dependencies[] = cm_cablecast
+

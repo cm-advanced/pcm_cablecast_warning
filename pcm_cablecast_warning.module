@@ -1,0 +1,61 @@
+<?php
+
+/** @file
+ *  Tightrope Cablecast integration for the Community Media Startertkit
+ *  Drupal profile
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function pcm_cablecast_warning_requirements($phase) {
+  $requirements = array();
+  
+  if ($phase == 'runtime') {
+    // hardcoded cablecast address
+    // PROD - http://10.0.100.251
+    // DEV - http://10.0.100.253
+    //dsm(variable_get('cm_cablecast_server_address', NULL));
+    if (variable_get('cm_cablecast_server_address', NULL) == 'http://10.0.100.251') {
+      //
+      //dsm($_SERVER["SERVER_ADDR"]);
+       // hardcoded server address
+       // PROD - http://10.0.100.11
+       // DEV - http://10.0.100.10
+			if ($_SERVER["SERVER_ADDR"] != '10.0.100.11') {
+				$requirements['site_name'] = array(
+					'title' => t('Cablecast'),
+					'description' => t('Only the Production server should be configured to use this Cablecast'),
+					'value' => check_plain($site_name),
+					'severity' => REQUIREMENT_ERROR,
+				);
+			}
+    }
+  }
+
+  
+  return $requirements;
+}
+
+/**
+ * Implements hook_form_alter
+ * @param $form
+ * @param $form_id
+ */
+function pcm_cablecast_warning_form_alter(&$form, &$form_state, $form_id) {
+  // hide the fields from entity add/edit forms
+  switch($form_id) {
+    case 'cm_project_node_form':
+      $form['field_cablecast_project_id']['#type'] = 'hidden';
+      break;
+    case 'cm_show_node_form':
+      $form['field_cablecast_show_id']['#type'] = 'hidden';
+      break;
+    case 'user_profile_form':
+      $form['field_cablecast_producer_id']['#type'] = 'hidden';
+      break;
+  }
+}
+
+
+
